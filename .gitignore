@@ -1,0 +1,4 @@
+node_modules/
+.zcode/
+sample-docs/
+dist/
