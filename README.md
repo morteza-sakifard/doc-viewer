@@ -1,122 +1,102 @@
 # نُما — doc-viewer
 
-نمایشگر تحت‌وبِ فایل‌های Markdown با پشتیبانی کامل **RTL/LTR**، ساخته‌شده برای خواندنِ راحت مستندات فارسی که پر از اصطلاحات و کدهای انگلیسی هستند.
+A web-based Markdown viewer with full **RTL/LTR** support, built for reading Persian technical documents that mix Persian prose with English terms and code.
 
-برخلاف پیش‌نمایش‌های معمولی، نُما جهت هر بلاک را هوشمندانه تشخیص می‌دهد: پاراگراف یا تیتری که با کد انگلیسی شروع می‌شود ولی فارسی است، راست‌چین رندر می‌شود؛ و سلول‌های کدِ داخل جدول‌ها چپ‌چین می‌مانند.
+Unlike typical previews, نُما detects the direction of each block intelligently: a heading that starts with English code but is written in Persian renders right-to-left, while code cells inside tables stay left-aligned.
 
----
+## Features
 
-## ✨ امکانات
+### Library (folder scan)
 
-### 📚 کتابخانه (اسکن پوشه)
+- Type a folder path (e.g. `C:\docs\my-project`) and every `.md` / `.markdown` file at any depth renders on **one page**, preserving the folder hierarchy
+- Numeric-aware ordering (`01-…` before `02-…` before `steps/10-…`)
+- Per-file path chips, folder separators, and quick jumps between files
+- Open folders via the system dialog (File System Access API), open single files, or drag & drop
 
-- **اسکن با مسیر:** مسیر یک پوشه را می‌دهید (مثلاً `C:\docs\my-project`) و همه‌ی فایل‌های `.md` / `.markdown` — در هر عمقی — در **یک صفحه** و با **حفظ سلسله‌مراتب پوشه‌ها** رندر می‌شوند
-- مرتب‌سازی عددی هوشمند (`01-…` قبل از `02-…` قبل از `steps/10-…`)
-- پرش سریع بین فایل‌ها، جداکننده‌ی پوشه و چیپ مسیر نسبی بالای هر فایل
-- **انتخاب پوشه** با دیالوگ سیستمی (File System Access API)، انتخاب فایل تکی، و **drag & drop**
+### Tree table of contents
 
-### 🧭 فهرست مطالب درختی
+- Three levels: folder → file → headings, with per-branch collapse
+- A global "collapse all / expand all" button
+- Scroll-spy highlights the active folder, file and heading at once
+- Heading search with a match counter and Enter-to-jump
 
-- ساختار سه‌سطحی: پوشه ← فایل ← تیترها، با جمع/باز کردن هر شاخه
-- دکمه‌ی **«بستن همه / باز کردن همه»** برای کل درخت
-- **scroll-spy**: پوشه‌ی فعال، فایل فعال و تیتر فعال هم‌زمان هایلایت می‌شوند
-- جست‌وجوی عنوان‌ها با شمارنده و پرش با `Enter`
+### Quick paste (no saving)
 
-### 📋 متن سریع (بدون ذخیره)
+- Paste Markdown and instantly read the rendered result — nothing is written to disk
+- Text lives in `sessionStorage`: it survives a refresh and is cleared when the tab closes
+- Save (downloads `paste.md`), clear (two-step confirm) and edit buttons
 
-- متن Markdown را paste می‌کنید و فوراً نسخه‌ی ویژوال را می‌بینید — **بدون ذخیره روی دیسک**
-- متن در `sessionStorage` نگه داشته می‌شود: با refresh نمی‌پرد، ولی **با بستن تب خودکار پاک می‌شود**
-- دکمه‌های **ذخیره** (دانلود `paste.md`)، **پاک کردن** (دو مرحله‌ای با تأیید) و **ویرایش متن**
+### RTL/LTR detection
 
-### 🌍 تشخیص جهت RTL/LTR
+- Every heading, paragraph, list and quote is analyzed separately: any Persian/Arabic letter makes it RTL — even if it starts with English code
+- Tables take a direction from their content while each cell keeps its own (code cells like `TsEvent` stay LTR)
+- Code blocks are always LTR with horizontal scrolling
 
-- هر تیتر، پاراگراف، لیست و نقل‌قول جداگانه تحلیل می‌شود: اگر حرف فارسی/عربی دارد RTL است — حتی اگر با کد انگلیسی شروع شود
-- **جدول‌ها:** جهت کل جدول از محتوایش تعیین می‌شود و هر سلول جهت مستقل دارد (سلول‌های کد مثل `TsEvent` چپ‌چین می‌مانند)
-- کدها همیشه LTR با اسکرول افقی
+### Mermaid diagrams
 
-### 📊 نمودارهای Mermaid
+- ` ```mermaid ` blocks render automatically in a monochrome theme that matches light/dark mode
+- Click a diagram for a fullscreen modal: wheel zoom around the cursor, drag to pan, `+` / `−` / reset buttons, and `+` `-` `0` `Esc` keys
 
-- رندر خودکار بلوک‌های ` ```mermaid ` با تم مونوکرومِ هماهنگ با حالت روشن/تیره
-- **مودال بزرگ‌نمایی** با کلیک روی نمودار: زوم با اسکرول (دور نشانگر)، جابه‌جایی با کشیدن، دکمه‌های `+` / `−` / ریست و کلیدهای `+` `-` `0` `Esc`
+### Look & feel
 
-### 🎨 خوانایی و ظاهر
+- Light/dark theme (persisted)
+- Vazirmatn for Persian text, JetBrains Mono for code — self-hosted, no CDN
+- Minimal editorial layout with a narrow reading column
+- Collapsible sidebar (state persisted), fully responsive
 
-- حالت **روشن/تیره** با ذخیره‌ی انتخاب
-- فونت **Vazirmatn** برای متن فارسی و **JetBrains Mono** برای کدها (به‌صورت محلی، بدون وابستگی به CDN)
-- سبک مینیمال ادیتوریال با ستون مطالعه‌ی باریک
-- **سایدبار باز/بسته**شدنی با حفظ وضعیت
-- کاملاً **ریسپانسیو** (فهرست موبایل، نوار ابزار فشرده)
+### Also included
 
-### 🔧 جزئیات دیگر
+- Syntax highlighting with a copy button (highlight.js)
+- Word, section and code-block counts plus reading time
+- External links open in a new tab; unresolved relative links show an in-app message
 
-- هایلایت سینتکس کد (highlight.js) با دکمه‌ی کپی
-- شمارش واژه‌ها، بخش‌ها، قطعه‌های کد و زمان مطالعه
-- لینک‌های خارجی در تب جدید؛ لینک‌های نسبیِ حل‌نشده پیام داخل برنامه می‌گیرند
+## Getting started
 
----
-
-## 🚀 اجرا
-
-### پیش‌نیازها
-
-- [Node.js](https://nodejs.org) نسخه ۱۸ یا بالاتر
-
-### توسعه
+Requires Node.js 18+.
 
 ```bash
 npm install
-npm run dev
+npm run dev      # http://localhost:5173
 ```
-
-سپس `http://localhost:5173` را باز کنید. برنامه با `README.md` خودِ پروژه بارگذاری می‌شود.
-
-### بیلد تولید
 
 ```bash
-npm run build    # خروجی در dist/
-npm run preview  # پیش‌نمایش خروجی تولید
+npm run build    # outputs to dist/
+npm run preview  # preview the production build
 ```
 
----
+The app starts by rendering this `README.md`.
 
-## ⚠️ نکته درباره‌ی اسکن پوشه
+## Folder-scan note
 
-مرورگرها به‌دلایل امنیتی اجازه‌ی خواندن مسیر دلخواه از دیسک را نمی‌دهند. راه‌حل نُما یک API کوچک است که به‌صورت middleware روی سرور Vite (هم `dev` و هم `preview`) سوار می‌شود:
+Browsers cannot read arbitrary disk paths for security reasons. نُما adds a small API as Vite middleware (available in both `dev` and `preview`):
 
-- `GET /api/docs-tree?root=…` — اسکن بازگشتی پوشه (از `node_modules`، `.git`، `dist` و پوشه‌های مخفی می‌پرد)
-- `GET /api/docs-file?root=…&rel=…` — محتوای یک فایل، با گارد مسیر-traversal
+- `GET /api/docs-tree?root=…` — recursive scan (skips `node_modules`, `.git`, `dist` and hidden folders)
+- `GET /api/docs-file?root=…&rel=…` — file content, guarded against path traversal
 
-پس **برای تایپ مسیر پوشه** حتماً از `npm run dev` یا `npm run preview` خودِ پروژه استفاده کنید. اگر فایل را روی هاست استاتیک دیگری بگذارید، همچنان «انتخاب پوشه» (File System Access API)، «فایل تکی»، drag & drop و «متن سریع» کار می‌کنند.
+Typing a folder path therefore requires running the project's own dev/preview server. On any static host, folder picking (File System Access API), single files, drag & drop and Quick paste still work.
 
----
-
-## 🗂 ساختار پروژه
+## Project structure
 
 ```
 doc-viewer/
-├── README.md                # همین فایل — سند پیش‌فرض برنامه
-├── 00-architecture.md       # نمونه‌ی سند فارسی/انگلیسی
-├── sample-docs/             # فیکسچر تست با زیرپوشه
-│   ├── 01-roadmap.md
-│   ├── 02-conventions.md
-│   └── steps/
-│       ├── 10-orderflow.md
-│       └── 11-volume-profile.md
+├── README.md                # this file — the app's default document
+├── 00-architecture.md       # sample Persian/English document
+├── sample-docs/             # test fixture with a subfolder
 ├── index.html
-├── vite.config.ts           # شامل middleware اسکن پوشه
+├── vite.config.ts           # includes the folder-scan middleware
 └── src/
-    ├── main.tsx             # ورود + فونت‌های محلی
-    ├── App.tsx              # منطق رندر Markdown، RTL، درخت TOC، مودال Mermaid
-    └── styles.css           # سبک ادیتوریال، حالت روشن/تیره، ریسپانسیو
+    ├── main.tsx             # entry + local fonts
+    ├── App.tsx              # Markdown rendering, RTL, TOC tree, Mermaid modal
+    └── styles.css           # editorial theme, light/dark, responsive
 ```
 
-## 🛠 تکنولوژی‌ها
+## Tech stack
 
-| ابزار | نقش |
+| Tool | Role |
 | --- | --- |
-| [Vite](https://vitejs.dev) + React 18 + TypeScript | پلتفرم و UI |
-| [react-markdown](https://github.com/remarkjs/react-markdown) + remark-gfm | رندر امن Markdown (بدون HTML خام) |
-| [highlight.js](https://highlight.js.org) | هایلایت سینتکس |
-| [mermaid](https://mermaid.js.org) | نمودارها |
-| [lucide-react](https://lucide.dev) | آیکون‌ها |
-| @fontsource (Vazirmatn، JetBrains Mono) | فونت‌های محلی |
+| Vite + React 18 + TypeScript | platform & UI |
+| react-markdown + remark-gfm | safe Markdown rendering (no raw HTML) |
+| highlight.js | syntax highlighting |
+| mermaid | diagrams |
+| lucide-react | icons |
+| @fontsource (Vazirmatn, JetBrains Mono) | self-hosted fonts |
