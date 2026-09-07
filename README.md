@@ -1,4 +1,4 @@
-# نُما — doc-viewer
+# نُما
 
 A web-based Markdown viewer with full **RTL/LTR** support, built for reading Persian technical documents that mix Persian prose with English terms and code.
 
